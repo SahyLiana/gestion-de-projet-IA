@@ -14,12 +14,12 @@ Assistant de gestion de projet agile avec IA — Mémoire de Fin d'Études MSc e
 | State | Zustand (UI) + TanStack Query (server) |
 | Forms | React Hook Form + Zod |
 | Backend | NestJS 10 + TypeScript (strict) |
-| ORM | Prisma 5 |
+| ORM | Drizzle ORM |
 | DB | PostgreSQL 15 |
 | Temps réel | Socket.io via NestJS Gateway |
 | Auth | JWT (access + refresh) + bcrypt + RBAC (4 rôles) |
 | Tests | Jest + Supertest (back) + Vitest + RTL (front) |
-| IA | ONNX (classification) + Gemini (génération, estimation) |
+| IA | LLM cloud OpenAI (gpt-4o-mini) via SDK `openai`, appel direct — 4 agents (priorité, PO, estimateur, chatbot) |
 | Conteneurisation | Docker + Docker Compose |
 | CI/CD | GitHub Actions |
 
@@ -64,7 +64,6 @@ agile-ia-assistant/
 │   └── api/                  # NestJS + TS
 ├── packages/
 │   └── shared-types/         # Types TS communs (optionnel)
-├── ml/                       # Python offline (training only)
 ├── docker-compose.yml
 ├── package.json              # racine (workspaces)
 └── README.md
@@ -84,9 +83,9 @@ Voir `apps/api/.env.example` et `apps/web/.env.example`.
 | `npm test` | Lance tous les tests |
 | `npm run lint` | ESLint sur tout le monorepo |
 | `npm run typecheck` | tsc --noEmit sur tout le monorepo |
-| `npm run db:migrate` | Prisma migrate dev |
+| `npm run db:migrate` | Drizzle Kit migrate |
 | `npm run db:seed` | Seed la base de données |
-| `npm run db:studio` | Prisma Studio (UI DB) |
+| `npm run db:studio` | Drizzle Studio (UI DB) |
 
 ## Licence
 

@@ -30,9 +30,6 @@ coverage/
 *.lcov
 .nyc_output/
 
-# Prisma generated
-apps/api/prisma/migrations/*/migration.sql.bak
-
 # IDE
 .vscode/*
 !.vscode/extensions.json

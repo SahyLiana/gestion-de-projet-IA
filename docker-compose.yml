@@ -37,7 +37,6 @@ services:
       - '3000:3000'
     volumes:
       - ./apps/api:/app/apps/api
-      - ./ml:/app/ml
       - /app/apps/api/node_modules
 
   web:
