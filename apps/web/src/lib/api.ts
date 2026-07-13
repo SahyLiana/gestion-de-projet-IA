@@ -17,7 +17,7 @@ export function getAccessToken(): string | null {
 }
 
 export const api: AxiosInstance = axios.create({
-  baseURL: '/api',
+  baseURL: import.meta.env.VITE_API_URL,
   withCredentials: true,
 });
 
@@ -66,9 +66,13 @@ api.interceptors.response.use(
   },
 );
 
-async function tryRefresh(): Promise<string | null> {
+export async function tryRefresh(): Promise<string | null> {
   try {
-    const response = await axios.post('/api/auth/refresh', {}, { withCredentials: true });
+    const response = await axios.post(
+      `${import.meta.env.VITE_API_URL}/auth/refresh`,
+      {},
+      { withCredentials: true },
+    );
     return response.data.accessToken;
   } catch {
     return null;

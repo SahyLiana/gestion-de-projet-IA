@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useAuthStore } from '@/stores/auth-store';
-import { api, setAccessToken, getAccessToken } from '@/lib/api';
+import { api, setAccessToken, tryRefresh } from '@/lib/api';
 import { FullScreenSpinner } from '@/components/ui/spinner';
 
 export default function App() {
@@ -8,20 +8,16 @@ export default function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const token = localStorage.getItem('accessToken');
-    if (token) {
-      setAccessToken(token);
-      api
-        .get('/auth/me')
-        .then((res) => setUser(res.data))
-        .catch(() => {
-          localStorage.removeItem('accessToken');
-          setAccessToken(null);
-        })
-        .finally(() => setLoading(false));
-    } else {
-      setLoading(false);
-    }
+    tryRefresh()
+      .then((token) => {
+        if (!token) return null;
+        setAccessToken(token);
+        return api.get('/auth/me').then((res) => setUser(res.data));
+      })
+      .catch(() => {
+        setAccessToken(null);
+      })
+      .finally(() => setLoading(false));
   }, [setUser]);
 
   if (loading) {
@@ -41,8 +37,7 @@ export default function App() {
               <button
                 className="rounded-md border px-3 py-1.5 text-sm hover:bg-accent"
                 onClick={() => {
-                  localStorage.removeItem('accessToken');
-                  setAccessToken(getAccessToken() === null ? null : null);
+                  setAccessToken(null);
                   logout();
                 }}
               >
